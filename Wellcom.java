@@ -3,8 +3,12 @@ package package1;
 import java.util.Scanner;
 
 public class Wellcom {
-	public static String[][] bookList() {
-		String[][] mBook=new String[3][7];
+	private static String[][] mBook;
+	private static CartItem[] cartItemList=new CartItem[3];
+	private static int cartCount=0;
+	
+	public static void bookList() {
+		mBook=new String[3][7];
 		mBook[0][0] = "ISBN1234";
 		mBook[0][1] = "쉽게 배우는 JSP 웹프로그래밍";
 		mBook[0][2] = "27000";
@@ -34,9 +38,7 @@ public class Wellcom {
 				System.out.print(mBook[i][j]+" | ");
 			}
 			System.out.println("");
-		}	
-		
-		return mBook;
+		}			
 	}
 	
 	public static void menuIntroduction() {
@@ -66,7 +68,7 @@ public class Wellcom {
 
 	public static void menuCartAddItem() {
 		System.out.println("바구니에 항목추가하기");
-		String[][] mBook=bookList();
+		bookList();
 		
 		while(true) {
 			System.out.println("장바구니에 추가할 도서의 ID를 입력하세요");
@@ -87,10 +89,15 @@ public class Wellcom {
 				continue;
 			}
 			
+			System.out.println("몇권을 주문하시겠습니까?");
+			int count=input.nextInt();
+			
 			System.out.println("장바구니에 추가하겠습니까?(Y|N)");
 			String yn=input.nextLine();
 			
 			if(yn.toLowerCase().equals("y")) {
+				cartItemList[cartCount]=new CartItem(mBook[search_index], count);
+				cartCount++;
 				System.out.println(mBook[search_index][1]+"가 장바구니에 추가되었습니다.");
 			}	
 			break;		
