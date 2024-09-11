@@ -2,15 +2,20 @@ package package1;
 
 public class CartItem {
 	private String[] book=new String[7];
+	private String bookId;
 	private int count;
 	private int total_price;
 	
-	CartItem(String[] pbook, int pcount) {
+	CartItem(String[] pbook) {
 		this.book=pbook;
-		this.count=pcount;
+		this.bookId=this.book[0];
+		this.count=1;
 		this.total_price=Integer.parseInt(this.book[2]) * this.count;
 	}
 	
+	String getBookId() {
+		return this.bookId;
+	}
 	String[] getBook() {
 		return this.book;
 	}

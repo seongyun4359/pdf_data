@@ -6,7 +6,19 @@ public class Wellcom {
 	private static String[][] mBook;
 	private static CartItem[] cartItemList=new CartItem[3];
 	private static int cartCount=0;
+	public final static int NODATA=-1;
 	
+	public static int isCartInBook(String pbookId) {
+		int search_index=NODATA;
+		for(int i=0; i<cartCount;i++) {
+			if(pbookId.equals(cartItemList[i].getBookId())) {
+				search_index=i;
+				break;
+			}
+		}
+		
+		return search_index;
+	}
 	public static void bookList() {
 		mBook=new String[3][7];
 		mBook[0][0] = "ISBN1234";
@@ -73,12 +85,12 @@ public class Wellcom {
 		while(true) {
 			System.out.println("장바구니에 추가할 도서의 ID를 입력하세요");
 			Scanner input=new Scanner(System.in);
-			String str=input.nextLine();
+			String bookId=input.nextLine();
 			
 			int search_index=-1;
 			
 			for(int i=0; i<3;i++) {
-				if(str.equals(mBook[i][0])) {
+				if(bookId.equals(mBook[i][0])) {
 					search_index=i;
 					break;
 				}
@@ -87,17 +99,20 @@ public class Wellcom {
 			if(search_index==-1) {
 				System.out.println("도서의 ID를 확인해 주세요..");
 				continue;
-			}
-			
-			System.out.println("몇권을 주문하시겠습니까?");
-			int count=input.nextInt();
+			}			
 			
 			System.out.println("장바구니에 추가하겠습니까?(Y|N)");
 			String yn=input.nextLine();
 			
 			if(yn.toLowerCase().equals("y")) {
-				cartItemList[cartCount]=new CartItem(mBook[search_index], count);
-				cartCount++;
+				int index=isCartInBook(bookId);
+				if(index != NODATA) {
+					cartItemList[index].setCount(cartItemList[index].getCount()+1);
+				}
+				else {
+					cartItemList[cartCount]=new CartItem(mBook[search_index]);
+					cartCount++;					
+				}				
 				System.out.println(mBook[search_index][1]+"가 장바구니에 추가되었습니다.");
 			}	
 			break;		
